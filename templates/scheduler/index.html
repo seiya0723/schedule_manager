@@ -1,0 +1,32 @@
+{% extends "scheduler/base.html" %}
+{% load static %}
+
+{% block extra_head %}
+{% endblock %}
+
+{% block main %}
+
+<h2>カレンダー一覧</h2>
+
+{% for calendar in calendars %}
+<div>
+    <a href="{% url 'scheduler:calendar' calendar.id %}">{{ calendar.name }}</a>
+</div>
+{% endfor %}
+
+
+<h2>カレンダー新規作成</h2>
+
+{% comment %}
+<form action="" method="post">
+    {% csrf_token %}
+    <input type="text" name="name">
+    <input type="submit" value="新規作成">
+</form>
+{% endcomment %}
+
+
+
+{% endblock %}
+
+

@@ -1,0 +1,58 @@
+{% extends "scheduler/base.html" %}
+{% load static %}
+
+{% block extra_head %}
+<script>
+const events =
+[
+            // イベントごとに装飾を施す
+            // https://fullcalendar.io/docs/event-object
+            {% for schedule in schedules %}
+            {
+                id:"{{ schedule.id }}",
+                title:"{{ schedule.content }}",
+                start:"{{ schedule.start_dt|date:'Y-m-d' }}",
+                end:"{{ schedule.end_dt|date:'Y-m-d' }}",
+                borderColor: "white",
+            },
+            {% endfor %}
+    ] 
+</script>
+<script src="{% static 'scheduler/js/script.js' %}"></script>
+
+
+{% endblock %}
+
+{% block main %}
+
+<h2>カレンダー</h2>
+
+
+    <div class="row mx-0">
+        <div class="col-md-6">
+            <div id='calendar' style=""></div>
+        </div>
+        <div class="col-md-6">
+            <form method="POST">
+                {% csrf_token %}
+                <input name="start_dt" type="text" readonly>
+                <input name="end_dt" type="text" readonly>
+                <textarea class="form-control" name="content"></textarea>
+                <input type="submit" value="送信">
+            </form>
+
+            {# TODO: ここはタブシステムを使って完了と未完を表示切り替えする。 #}
+            {# https://noauto-nolife.com/post/css3-tab-system/ #}
+            {% for schedule in schedules %}
+            <div id="schedule_{{ schedule.id }}" class="border">
+                <div>{{ schedule.start_dt }} ~ {{ schedule.end_dt }} </div>
+                <div>やること: {{ schedule.content }}</div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+
+{% endblock %}
+
